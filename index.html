@@ -81,16 +81,16 @@
 <body>
     <div id="root"></div>
 
-    <!-- Application Script -->
-    <script type="text/babel" data-presets="react,typescript">
+    <!-- Application Script with data-type="module" to enable imports -->
+    <script type="text/babel" data-type="module">
         import React, { useState } from 'https://esm.sh/react@18.2.0';
-        import ReactDOM from 'https://esm.sh/react-dom@18.2.0/client';
+        import { createRoot } from 'https://esm.sh/react-dom@18.2.0/client';
         import { 
             Shield, Users, FileText, AlertTriangle, CheckCircle, BarChart3, 
             Calendar, Lock, ChevronRight, Menu, X, UserCheck, Flag, 
             LayoutDashboard, Award, Clock, ChevronUp 
         } from 'https://esm.sh/lucide-react@0.292.0';
-        import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'https://esm.sh/recharts@2.10.1';
+        import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'https://esm.sh/recharts@2.10.1?deps=react@18.2.0,react-dom@18.2.0';
 
         // --- CONSTANTS & MOCK DATA ---
         const USERS = [
@@ -729,7 +729,7 @@
             );
         };
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
+        const root = createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
 </body>
