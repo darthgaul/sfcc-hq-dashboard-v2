@@ -90,7 +90,6 @@
             Calendar, Lock, ChevronRight, Menu, X, UserCheck, Flag, 
             LayoutDashboard, Award, Clock, ChevronUp 
         } from 'https://esm.sh/lucide-react@0.292.0';
-        import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'https://esm.sh/recharts@2.10.1?deps=react@18.2.0,react-dom@18.2.0';
 
         // --- CONSTANTS & MOCK DATA ---
         const USERS = [
@@ -131,6 +130,8 @@
           ]
         };
 
+        const LOGO_URL = "https://publish-01.obsidian.md/access/c6e84d0dba4a473d9f7c63884517ea6d/images/sfcc%20roundel%204.png";
+
         // --- COMPONENTS ---
         
         const Card = ({ children, className = '' }) => (
@@ -165,6 +166,31 @@
             );
         };
 
+        const CustomBarChart = ({ data }) => {
+            const maxValue = Math.max(...data.map(d => d.value));
+            return (
+                <div className="w-full h-full flex items-end justify-between space-x-2 pt-4 pb-2 px-2">
+                    {data.map((d, i) => {
+                        const heightPct = (d.value / maxValue) * 100;
+                        return (
+                            <div key={i} className="flex flex-col items-center flex-1 h-full justify-end group">
+                                <div className="relative w-full bg-ops-slate/20 rounded-t-sm overflow-hidden flex items-end transition-all duration-500 h-full">
+                                    <div 
+                                        className="w-full bg-ops-light group-hover:bg-ops-white transition-all duration-300"
+                                        style={{ height: `${heightPct}%` }}
+                                    ></div>
+                                    <div className="absolute top-2 w-full text-center text-[10px] font-mono font-bold text-ops-white opacity-0 group-hover:opacity-100 transition-opacity">
+                                        {d.value}%
+                                    </div>
+                                </div>
+                                <div className="mt-2 text-xs text-ops-slate font-mono uppercase truncate w-full text-center">{d.name}</div>
+                            </div>
+                        )
+                    })}
+                </div>
+            )
+        };
+
         // --- VIEWS ---
 
         const HQView = () => {
@@ -186,23 +212,14 @@
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <Card className="h-96">
-                            <h3 className="text-lg font-bold text-ops-white mb-6 flex items-center">
+                        <Card className="h-96 flex flex-col">
+                            <h3 className="text-lg font-bold text-ops-white mb-2 flex items-center">
                                 <BarChart3 className="w-5 h-5 mr-2 text-ops-light" />
                                 National Compliance Heatmap
                             </h3>
-                            <ResponsiveContainer width="100%" height="80%">
-                                <BarChart data={data} layout="vertical">
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#252525" />
-                                    <XAxis type="number" stroke="#5f686e" />
-                                    <YAxis dataKey="name" type="category" stroke="#96a3ae" width={60} />
-                                    <Tooltip 
-                                        contentStyle={{ backgroundColor: '#252525', borderColor: '#5f686e', color: '#c7d7e2' }}
-                                        itemStyle={{ color: '#c7d7e2' }}
-                                    />
-                                    <Bar dataKey="value" fill="#96a3ae" barSize={20} radius={[0, 4, 4, 0]} />
-                                </BarChart>
-                            </ResponsiveContainer>
+                            <div className="flex-1 w-full">
+                                <CustomBarChart data={data} />
+                            </div>
                         </Card>
 
                         <Card>
@@ -646,7 +663,7 @@
                     {/* Mobile Header */}
                     <div className="lg:hidden fixed w-full z-20 flex items-center justify-between p-4 bg-ops-surface border-b border-ops-slate/30">
                         <div className="flex items-center space-x-2">
-                            <div className="w-8 h-8 bg-ops-light text-ops-bg flex items-center justify-center font-bold rounded-sm">SF</div>
+                             <img src={LOGO_URL} alt="SFCC Logo" className="w-8 h-8 object-contain" />
                             <span className="font-bold tracking-wider text-ops-white">SFCC OPS</span>
                         </div>
                         <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="text-ops-white">
@@ -659,8 +676,8 @@
                         className={`fixed inset-y-0 left-0 z-10 w-64 bg-ops-surface border-r border-ops-slate/30 transform transition-transform lg:translate-x-0 lg:static flex flex-col ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
                     >
                         <div className="p-6 mt-14 lg:mt-0 flex items-center space-x-3">
-                            <div className="w-10 h-10 bg-gradient-to-br from-ops-slate to-ops-surface border border-ops-light flex items-center justify-center shadow-lg">
-                                <Shield className="text-ops-light w-5 h-5" />
+                            <div className="w-10 h-10 flex items-center justify-center">
+                                <img src={LOGO_URL} alt="SFCC Logo" className="w-full h-full object-contain" />
                             </div>
                             <div>
                                 <h1 className="font-bold text-lg tracking-wider text-ops-white leading-tight font-mono">
